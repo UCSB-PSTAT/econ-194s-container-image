@@ -7,7 +7,6 @@ USER root
 #RUN R -e "install.packages(c('<library>', '<library>'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
 RUN mamba install -y -c conda-forge -c r\
-:x
     r-dslabs\
     r-estimatr\
     r-fixest\
