@@ -4,7 +4,7 @@ pipeline {
         upstream(upstreamProjects: 'UCSB-PSTAT GitHub/base-rstudio/main', threshold: hudson.model.Result.SUCCESS)
     }
     environment {
-        IMAGE_NAME = '<COURSE/IMAGE ID>'
+        IMAGE_NAME = 'econ-194s'
         CONTAINER_REGISTRY  = 'registry.cloud.college.ucsb.edu'
     }
     stages {
@@ -40,8 +40,32 @@ pipeline {
                     steps {
                         container('podman') {
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME which rstudio'
-                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME R -q -e "getRversion() >= \\"4.5.2\\"" | tee /dev/stderr | grep -q "TRUE"'
-                            //sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME R -e "library(\"<library>\");library(\"<library>\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME R -q -e "getRversion() >= \\"4.5.3\\"" | tee /dev/stderr | grep -q "TRUE"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"AER\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"broom\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"dslabs\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"dplyr\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"estimatr\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"fixest\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"ggplot2\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"gt\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"haven\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"ISLR\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"kableExtra\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"knitr\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"lubridate\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"modelsummary\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"rdrobust\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"readr\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"readxl\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"readxl\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"rmarkdown\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"scales\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"tibble\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"tidyr\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"tidysynth\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"tidyverse\")"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME Rscript "library(\"tinytex\")"'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME jupyter labextension list | grep "@jupyter-ai" | grep "@jupyter-ai.*enabled.*OK"'
                             sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
                             retry (6) {
